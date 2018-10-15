@@ -1,1 +1,1 @@
-# Mobile-Appliactions-Programming
+# Mobile-Applications-Programming
