@@ -20,7 +20,7 @@ public class QuizActivity extends AppCompatActivity {
 
         new Question(R.string.question_stolica_polski, true),
         new Question(R.string.question_stolica_dolnego_slaska, true),
-        new Question(R.string.question_sniezka, true),
+        new Question(R.string.question_sniezka, false),
         new Question(R.string.question_wisla, false),
     };
 
