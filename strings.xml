@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">QuizApplication</string>
+    <string name="question_stolica_polski"> Czy Warszawa jest stolicą Polski? </string>
+    <string name="question_stolica_dolnego_slaska"> Czy Wrocław jest stolicą Dolnego Śląska? </string>
+    <string name="question_sniezka"> Czy Śnieżka to najwyższy szczyt gór w Polsce? </string>
+    <string name="question_wisla"> Czy Wisła to najkrótsza rzeka w Polsce? </string>
+
+    <string name="trueButton"> Prawda </string>
+    <string name="falseButton"> Fałsz </string>
+    <string name="nextButton"> Dalej </string>
+
+    <string name="goodAnswer"> Dobrze </string>
+    <string name="wrongAnswer"> Źle </string>
+</resources>
