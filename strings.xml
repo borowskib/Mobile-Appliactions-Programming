@@ -8,7 +8,10 @@
     <string name="trueButton"> Prawda </string>
     <string name="falseButton"> Fałsz </string>
     <string name="nextButton"> Dalej </string>
+    <string name="previousButton"> Wstecz </string>
 
     <string name="goodAnswer"> Dobrze </string>
     <string name="wrongAnswer"> Źle </string>
+
+    <string name="share"> Share </string>
 </resources>

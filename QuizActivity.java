@@ -2,9 +2,12 @@ package com.example.borowskib.quizapplication;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
 
@@ -12,7 +15,8 @@ public class QuizActivity extends AppCompatActivity {
 
     private Button mTrueButton;
     private Button mFalseButton;
-    private Button mNextButton;
+    private ImageButton mNextButton;
+    private ImageButton mPreviousButton;
     private TextView mQuestionTextView;
     private int mCurrentIndex;
 
@@ -33,6 +37,13 @@ public class QuizActivity extends AppCompatActivity {
         // Text View Function
 
         mQuestionTextView = (TextView) findViewById(R.id.QuestionTextView);
+        mQuestionTextView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                mCurrentIndex =(mCurrentIndex +1) % mQuestionBank.length;
+                updateQuestion();
+            }
+        });
 
         // True Button Function
 
@@ -52,12 +63,25 @@ public class QuizActivity extends AppCompatActivity {
 
         // Next Button Function
 
-        mNextButton = (Button) findViewById(R.id.NextButton);
+        mNextButton = (ImageButton) findViewById(R.id.NextButton);
         mNextButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 mCurrentIndex = (mCurrentIndex +1) % mQuestionBank.length;
                 updateQuestion();
+            }
+        });
+
+        // Previous Button Function
+
+        mPreviousButton = (ImageButton) findViewById(R.id.PreviousButton);
+        mPreviousButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                if(mCurrentIndex != 0){
+                mCurrentIndex = (mCurrentIndex -1) % mQuestionBank.length;
+                updateQuestion();
+                }
             }
         });
 
@@ -76,10 +100,22 @@ public class QuizActivity extends AppCompatActivity {
     // Check the User's Answer
 
     public void checkAnswer(boolean userPressedTrue){
+
+        int messageResId = 0;
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
         if (userPressedTrue == answerIsTrue){
+            messageResId = R.string.goodAnswer;
             mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
             updateQuestion();
         }
+        else {
+            messageResId = R.string.wrongAnswer;
+        }
+
+        // Make Toast
+        Toast message = Toast.makeText(this,messageResId, Toast.LENGTH_SHORT);
+        message.setGravity(Gravity.TOP, 0, 250);
+        message.show();
+
     }
 }

@@ -4,7 +4,9 @@ public class Question {
     private int mTestResId;
     private boolean mAnswerTrue;
 
-    // Generated getters and setters
+    // Generated getters and setters - Methods
+    // Fields of Class
+
     public Question(int textRestId, boolean answerTrue){
         mTestResId = textRestId;
         mAnswerTrue = answerTrue;

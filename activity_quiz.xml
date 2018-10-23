@@ -23,7 +23,7 @@
     <Button
         android:id="@+id/TrueButton"
         android:layout_width="wrap_content"
-        android:layout_height="43dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
@@ -40,7 +40,7 @@
     <Button
         android:id="@+id/FalseButton"
         android:layout_width="wrap_content"
-        android:layout_height="44dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
@@ -54,7 +54,7 @@
         app:layout_constraintVertical_bias="0.624"
         tools:ignore="MissingConstraints" />
 
-    <Button
+    <ImageButton
         android:id="@+id/NextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,12 +62,31 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:text="@string/nextButton"
+        android:contentDescription="@string/share"
+        android:src="@drawable/arrow_right"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.614"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.756"
+        app:layout_constraintVertical_bias="0.757"
         tools:ignore="MissingConstraints" />
+
+    <ImageButton
+        android:id="@+id/PreviousButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/share"
+        android:src="@drawable/arrow_left"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.379"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.757" />
 
 </android.support.constraint.ConstraintLayout>
