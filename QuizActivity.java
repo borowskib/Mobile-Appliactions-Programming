@@ -20,14 +20,16 @@ public class QuizActivity extends AppCompatActivity {
     private TextView mQuestionTextView;
     private int mCurrentIndex;
 
+    int CurrentPoints = 0;
+    int QuestionAnswerStatus = 0;
+
     private Question[] mQuestionBank = new Question[]{
 
-        new Question(R.string.question_stolica_polski, true),
-        new Question(R.string.question_stolica_dolnego_slaska, true),
-        new Question(R.string.question_sniezka, false),
-        new Question(R.string.question_wisla, false),
+        new Question(R.string.question_stolica_polski, true, false),
+        new Question(R.string.question_stolica_dolnego_slaska, true, false),
+        new Question(R.string.question_sniezka, false, false),
+        new Question(R.string.question_wisla, false,false)
     };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +41,13 @@ public class QuizActivity extends AppCompatActivity {
         mQuestionTextView = (TextView) findViewById(R.id.QuestionTextView);
         mQuestionTextView.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v){
-                mCurrentIndex =(mCurrentIndex +1) % mQuestionBank.length;
-                updateQuestion();
+            public void onClick(View v) {
+                if (mCurrentIndex != mQuestionBank.length - 1) {
+                    mCurrentIndex += 1;
+                    updateQuestion();
+                } else if (QuestionAnswerStatus == mQuestionBank.length) {
+                    showScore();
+                } else { }
             }
         });
 
@@ -50,7 +56,12 @@ public class QuizActivity extends AppCompatActivity {
         mTrueButton = (Button) findViewById(R.id.TrueButton);
         mTrueButton.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {checkAnswer(true);}
+            public void onClick(View v) {
+                if(mQuestionBank[mCurrentIndex].getQuestionAnswered()==true){
+                    sendMessageAnswered();
+                }
+                else {checkAnswer(true);}
+            }
         });
 
         // False Button Function
@@ -58,7 +69,13 @@ public class QuizActivity extends AppCompatActivity {
         mFalseButton = (Button) findViewById(R.id.FalseButton);
         mFalseButton.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {checkAnswer(false);}
+            public void onClick(View v) {
+                if(mQuestionBank[mCurrentIndex].getQuestionAnswered()==true){
+                    sendMessageAnswered();
+                }
+                else {checkAnswer(false);
+                }
+            }
         });
 
         // Next Button Function
@@ -66,10 +83,16 @@ public class QuizActivity extends AppCompatActivity {
         mNextButton = (ImageButton) findViewById(R.id.NextButton);
         mNextButton.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v){
-                mCurrentIndex = (mCurrentIndex +1) % mQuestionBank.length;
-                updateQuestion();
-            }
+            public void onClick(View v) {
+                if(mCurrentIndex != mQuestionBank.length - 1){
+                    mCurrentIndex +=1;
+                    updateQuestion();
+                }
+                else if(QuestionAnswerStatus == mQuestionBank.length){
+                    showScore();
+                }
+                else { }
+        }
         });
 
         // Previous Button Function
@@ -103,19 +126,41 @@ public class QuizActivity extends AppCompatActivity {
 
         int messageResId = 0;
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
-        if (userPressedTrue == answerIsTrue){
-            messageResId = R.string.goodAnswer;
-            mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-            updateQuestion();
-        }
-        else {
-            messageResId = R.string.wrongAnswer;
+        if(mQuestionBank[mCurrentIndex].getQuestionAnswered()==false) {
+            if (userPressedTrue == answerIsTrue) {
+                messageResId = R.string.goodAnswer;
+                CurrentPoints += 1;
+                questionAnswerIsTrue();
+            } else {
+                messageResId = R.string.wrongAnswer;
+                questionAnswerIsTrue();
+            }
         }
 
         // Make Toast
+
         Toast message = Toast.makeText(this,messageResId, Toast.LENGTH_SHORT);
         message.setGravity(Gravity.TOP, 0, 250);
         message.show();
 
+    }
+
+    // Check Status Question of Answer
+
+    public void questionAnswerIsTrue(){
+        mQuestionBank[mCurrentIndex].setQuestionAnswered(true);
+        QuestionAnswerStatus += 1;
+    }
+
+    // Send Message If Answered
+
+    public void sendMessageAnswered(){
+        Toast.makeText(this,"Na to pytanie została już udzielona odpowiedź !", Toast.LENGTH_SHORT).show();
+    }
+
+    // Show Score After End of Questions
+
+    public void showScore(){
+        Toast.makeText(this,"Zdobyte punkty: " + CurrentPoints,Toast.LENGTH_SHORT).show();
     }
 }
