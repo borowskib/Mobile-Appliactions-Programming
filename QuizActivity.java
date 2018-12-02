@@ -1,7 +1,11 @@
 package com.example.borowskib.quizapplication;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -15,13 +19,22 @@ public class QuizActivity extends AppCompatActivity {
 
     private Button mTrueButton;
     private Button mFalseButton;
+    private Button mCheatButton;
     private ImageButton mNextButton;
     private ImageButton mPreviousButton;
     private TextView mQuestionTextView;
     private int mCurrentIndex;
+    private TextView mApiTextView;
+
+    private static final String TAG = "QuizActivity";
+    private static final String KEY_INDEX = "index";
+    private static final int REQUEST_CODE_CHEAT = 0;
+    private boolean mIsCheater;
 
     int CurrentPoints = 0;
     int QuestionAnswerStatus = 0;
+
+    public int cheatToken = 0;
 
     private Question[] mQuestionBank = new Question[]{
 
@@ -108,8 +121,41 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
+        // Cheat Button Function
+
+
+        mApiTextView = findViewById(R.id.mApiTextView);
+        mApiTextView.setText("Api version: " + String.valueOf(Build.VERSION.SDK_INT));
+
+        mCheatButton = (Button)findViewById(R.id.cheatButton);
+        mCheatButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                // Start CheatActivity
+                cheatToken += 1;
+                boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+                Intent intent = CheatActivity.newIntent(QuizActivity.this, answerIsTrue);
+                startActivityForResult(intent, REQUEST_CODE_CHEAT);
+                mIsCheater = true;
+            }
+        });
         updateQuestion();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK){
+            return;
+        }
+        if (requestCode == REQUEST_CODE_CHEAT) {
+            if (data == null) {
+                return;
+            }
+            mIsCheater = CheatActivity.wasAnswerShown(data);
+            tokenStatus();
+        }
+    }
+
 
 
     // Update number of Question in Application Window
@@ -124,9 +170,16 @@ public class QuizActivity extends AppCompatActivity {
 
     public void checkAnswer(boolean userPressedTrue){
 
-        int messageResId = 0;
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
-        if(mQuestionBank[mCurrentIndex].getQuestionAnswered()==false) {
+
+        int messageResId = 0;
+        showAboutCheating(); // Dlaczego nie wyświetla?
+        if(mIsCheater) {
+            Log.d(TAG, "Player is cheating.");
+            messageResId = R.string.judgement; // Dlaczego nie wyświetla?
+        }
+        if(mQuestionBank[mCurrentIndex].getQuestionAnswered() == false) {
+
             if (userPressedTrue == answerIsTrue) {
                 messageResId = R.string.goodAnswer;
                 CurrentPoints += 1;
@@ -139,10 +192,10 @@ public class QuizActivity extends AppCompatActivity {
 
         // Make Toast
 
+
         Toast message = Toast.makeText(this,messageResId, Toast.LENGTH_SHORT);
         message.setGravity(Gravity.TOP, 0, 250);
         message.show();
-
     }
 
     // Check Status Question of Answer
@@ -162,5 +215,27 @@ public class QuizActivity extends AppCompatActivity {
 
     public void showScore(){
         Toast.makeText(this,"Zdobyte punkty: " + CurrentPoints,Toast.LENGTH_SHORT).show();
+    }
+
+    // Show information about cheating
+
+    public void showAboutCheating(){
+        Toast.makeText(this,"Oszukiwanie jest złe", Toast.LENGTH_SHORT).show();
+    }
+
+    // Start another Activity
+
+    public void startActivity(Intent intent){
+
+    }
+
+    // Show status of tokens
+
+    void tokenStatus(){
+        Toast.makeText(this, "Wykorzystałeś: " + cheatToken + " z 2 podpowiedzi", Toast.LENGTH_SHORT).show();
+        if(cheatToken >= 2){
+           // mCheatButton.setVisibility(View.INVISIBLE);
+            mCheatButton.setEnabled(false);
+        }
     }
 }

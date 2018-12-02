@@ -14,4 +14,10 @@
     <string name="wrongAnswer"> Źle </string>
 
     <string name="share"> Share </string>
+
+    <string name="warningText"> Czy napewno chcesz to zrobić? </string>
+    <string name="showAnswerButton"> Pokaż odpowiedź </string>
+    <string name="cheatButton"> Oszukaj </string>
+    <string name="judgement"> Oszukiwanie jest złe ! </string>
+
 </resources>
